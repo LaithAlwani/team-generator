@@ -86,7 +86,9 @@ function ask (){
         if(answers.addEmployee === true){
             ask()
         }else{
-            render(employees)
+            fs.writeFile("./output/team.html",render(employees),err=>{
+                err ? console.error(err) : "File written to team.html";
+            });
         }
     })
 }
