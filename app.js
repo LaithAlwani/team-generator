@@ -10,10 +10,10 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const employees = [];
 
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-inquirer.prompt([
+//question used to ask the user
+const questions = [
     {
         type:'input',
         name:'name',
@@ -53,27 +53,46 @@ inquirer.prompt([
         message:'Please enter the Interns school name',
         when: (answers) => answers.position === 'Intern'
     },
+    {
+        type:'confirm',
+        name:'addEmployee',
+        message:'Would you like to add another Employee?'
+    }
 
-]).then(answers=>{
-    if(answers.position === 'Manager'){
-        const manager = new Manager(
-            answers.name,answers.id, answers.email, answers.officeNumber
-        )
-        console.log(manager);
-    }
-    if(answers.position === 'Engineer'){
-        const engineer = new Engineer(
-            answers.name,answers.id, answers.email, answers.github
-        )
-        console.log(engineer);
-    }
-    if(answers.position === 'Intern'){
-        const intern = new Intern(
-            answers.name,answers.id, answers.email, answers.school
-        )
-        console.log(intern);
-    }
-})
+];
+
+//starts inquirer and gets all the responses from the user
+function ask (){
+    inquirer.prompt(questions)
+    .then(answers=>{
+        if(answers.position === 'Manager'){
+            const manager = new Manager(
+                answers.name,answers.id, answers.email, answers.officeNumber
+            )
+            employees.push(manager);
+        }
+        if(answers.position === 'Engineer'){
+            const engineer = new Engineer(
+                answers.name,answers.id, answers.email, answers.github
+            )
+            employees.push(engineer);
+        }
+        if(answers.position === 'Intern'){
+            const intern = new Intern(
+                answers.name,answers.id, answers.email, answers.school
+            )
+            employees.push(intern);
+        }
+        if(answers.addEmployee === true){
+            ask()
+        }else{
+            render(employees)
+        }
+    })
+}
+//starts the ask function
+ask();
+
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
