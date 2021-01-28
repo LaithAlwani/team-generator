@@ -1,0 +1,10 @@
+.jumbotron{
+    background-color:thistle;
+}
+.card{
+    min-width:200px;
+}
+.card-header{
+    background-color: thistle;
+    /* color: white; */
+}
