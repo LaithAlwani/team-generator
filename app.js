@@ -11,23 +11,33 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 
 const employees = [];
+//validates user's answers to make it's not an empty string
+const answerValidation = (answer) =>{
+    if(answer ===''){
+        return ('please enter required infomation');
+    }
+    return true;
+}
 
 //question used to ask the user
 const questions = [
     {
         type:'input',
         name:'name',
-        message:'Please enter an employee name'
+        message:'Please enter an employee name',
+        validate:  answerValidation
     },
     {
         type:'input',
         name:'id',
-        message:'Please enter an employee id'
+        message:'Please enter an employee id',
+        validate:  answerValidation
     },
     {
         type:'input',
         name:'email',
-        message:'Please enter the employees\' email'
+        message:'Please enter the employees\' email',
+        validate:  answerValidation
     },
     {
         type:'list',
@@ -39,19 +49,22 @@ const questions = [
         type:'input',
         name:'officeNumber',
         message:'Please enter the Managers office number',
-        when: (answers) => answers.position === 'Manager'
+        when: (answers) => answers.position === 'Manager',
+        validate:  answerValidation
     },
     {
         type:'input',
         name:'github',
         message:'Please enter the Engineers github username',
-        when: (answers) => answers.position === 'Engineer'
+        when: (answers) => answers.position === 'Engineer',
+        validate:  answerValidation
     },
     {
         type:'input',
         name:'school',
         message:'Please enter the Interns school name',
-        when: (answers) => answers.position === 'Intern'
+        when: (answers) => answers.position === 'Intern',
+        validate:  answerValidation
     },
     {
         type:'confirm',
@@ -62,35 +75,54 @@ const questions = [
 ];
 
 //starts inquirer and gets all the responses from the user
-function ask (){
-    inquirer.prompt(questions)
-    .then(answers=>{
-        if(answers.position === 'Manager'){
-            const manager = new Manager(
-                answers.name,answers.id, answers.email, answers.officeNumber
-            )
-            employees.push(manager);
-        }
-        if(answers.position === 'Engineer'){
-            const engineer = new Engineer(
-                answers.name,answers.id, answers.email, answers.github
-            )
-            employees.push(engineer);
-        }
-        if(answers.position === 'Intern'){
-            const intern = new Intern(
-                answers.name,answers.id, answers.email, answers.school
-            )
-            employees.push(intern);
-        }
-        if(answers.addEmployee === true){
-            ask()
-        }else{
-            fs.writeFile(outputPath,render(employees),err=>{
-                err ? console.error(err) : "File written to team.html";
-            });
-        }
-    })
+async function ask (){
+   const answers = await inquirer.prompt(questions)
+    //check the position of the employee
+    if(answers.position === 'Manager'){
+        // instantiate a new Manger
+        const manager = new Manager(
+            answers.name,answers.id, answers.email, answers.officeNumber
+        )
+        employees.push(manager);
+    }
+    else if(answers.position === 'Engineer'){
+        // instantiate a new Engineer
+        const engineer = new Engineer(
+            answers.name,answers.id, answers.email, answers.github
+        )
+        employees.push(engineer);
+    }
+    else if(answers.position === 'Intern'){
+        // instantiate a new Intern
+        const intern = new Intern(
+            answers.name,answers.id, answers.email, answers.school
+        )
+        employees.push(intern);
+    }
+    //check if user wants to add a new employee
+    if(answers.addEmployee === true){
+        console.log(`\n--------------Nem Employee--------------\n`)
+        ask()
+    }else{
+        endMessage();
+        //write to team html file 
+        fs.writeFile(outputPath,render(employees),err=>{
+            err ? console.error(err) : "File written to team.html";
+        });
+    }
+    
 }
+//welcome message
+function welcomeMessage(){
+    console.log(`Welcome to team builder
+    ------------------------------`)
+}
+//end message
+function endMessage(){
+    console.log(`------------------------
+    Thank you for using Team Generator`);
+}
+
+welcomeMessage();
 //starts the ask function
 ask();
