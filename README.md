@@ -33,6 +33,6 @@ This application is covered under the [![License: MIT](https://img.shields.io/ba
 ## Questions:
 for questions please contact at:
 * Github: [laithalwani](https://github.com/laithalwani)
-*laith@gmail.com
+* laith@gmail.com
 
 ## Demo
