@@ -1,8 +1,5 @@
 /*Changes background color on Jumborton and card headers*/
 .thistle{
     background-color:thistle;
-}
-/*Minium card width set*/
-.card{
-    min-width:200px;
+    border-radius: 0;
 }
