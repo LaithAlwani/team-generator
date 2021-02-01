@@ -12,12 +12,12 @@ const render = require("./lib/htmlRenderer");
 
 const employees = [];
 //validates user's answers to make it's not an empty string
-// const answerValidation = (answer) =>{
-//     if(answer ===''){
-//         return ('please enter required infomation');
-//     }
-//     return true;
-// }
+const answerValidation = (answer) =>{
+    if(answer ===''){
+        return ('please enter required infomation');
+    }
+    return true;
+}
 
 //question used to ask the user
 const questions = [
@@ -25,19 +25,19 @@ const questions = [
         type:'input',
         name:'name',
         message:'Please enter an employee name',
-        // validate:  answerValidation
+        validate:  answerValidation
     },
     {
         type:'input',
         name:'id',
         message:'Please enter an employee id',
-        // validate:  answerValidation
+        validate:  answerValidation
     },
     {
         type:'input',
         name:'email',
         message:'Please enter the employees\' email',
-        // validate:  answerValidation
+        validate:  answerValidation
     },
     {
         type:'list',
@@ -50,21 +50,21 @@ const questions = [
         name:'officeNumber',
         message:'Please enter the Managers office number',
         when: (answers) => answers.position === 'Manager',
-        // validate:  answerValidation
+        validate:  answerValidation
     },
     {
         type:'input',
         name:'github',
         message:'Please enter the Engineers github username',
         when: (answers) => answers.position === 'Engineer',
-        // validate:  answerValidation
+        validate:  answerValidation
     },
     {
         type:'input',
         name:'school',
         message:'Please enter the Interns school name',
         when: (answers) => answers.position === 'Intern',
-        // validate:  answerValidation
+        validate:  answerValidation
     },
     {
         type:'confirm',
