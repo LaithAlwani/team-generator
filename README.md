@@ -16,6 +16,8 @@
 
 ## Description:
 Generate a webpage that displays a team's basic information.
+![](assets/images/app01.png)
+![](assets/images/app02.png)
 
 ## Installation Instructions:
 * instal nodeJS lastest version
